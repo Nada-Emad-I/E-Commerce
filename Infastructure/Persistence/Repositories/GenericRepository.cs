@@ -17,6 +17,7 @@ namespace Persistence.Repositories
             await _dbContext.Set<TEntity>().AddAsync(entity);
         }
 
+
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _dbContext.Set<TEntity>().ToListAsync();
@@ -35,6 +36,10 @@ namespace Persistence.Repositories
         public async Task<TEntity?> GetByIdAsync(ISpecification<TEntity, Tkey> specification)
         {
             return await SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specification).FirstOrDefaultAsync();
+        }
+        public async Task<int> CountAsync(ISpecification<TEntity, Tkey> specification)
+        {
+            return await SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specification).CountAsync();
         }
 
         public void Remove(TEntity entity)

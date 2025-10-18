@@ -17,14 +17,14 @@ namespace Presentation.Controllers
         //Get All Products
         [HttpGet]
         //baseUrl/api/Products
-        public async Task<ActionResult<IEnumerable<ProductDto>>>GetAllProducts([FromQuery]ProductQueryParams queryParams)
+        public async Task<ActionResult<PaginatedResult<ProductDto>>GetAllProducts([FromQuery]ProductQueryParams queryParams)
         {
             var products=await _serviceManager.productService.GetAllProductsAsync(queryParams);
             return Ok(products);
 
         }
         //Get  Product by id
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         //baseUrl/api/Product/10
         public async Task<ActionResult<ProductDto>> GetProductById(int id)
         {
