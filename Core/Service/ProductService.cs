@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using DomainLayer.Contracts;
 using DomainLayer.Exceptions;
-using DomainLayer.Models;
+using DomainLayer.Models.ProductModules;
 using Service.Specifications;
 using ServiceAbstraction;
 using Shared;
-using Shared.Dtos;
+using Shared.Dtos.ProductModules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
