@@ -1,9 +1,12 @@
 ﻿using DomainLayer.Contracts;
+using DomainLayer.Models.IdentityModules;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Data;
 using Persistence.Data.Contexts;
+using Persistence.Identity;
 using Persistence.Repositories;
 using StackExchange.Redis;
 using System;
@@ -29,6 +32,13 @@ namespace Persistence
             {
                 return ConnectionMultiplexer.Connect(Configuration.GetConnectionString("RedisConnection"));
             });
+            Services.AddDbContext<StoreIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection"));
+            });
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<StoreIdentityDbContext>();
             return Services;
         }
     }

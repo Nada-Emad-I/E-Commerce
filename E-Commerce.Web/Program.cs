@@ -1,13 +1,16 @@
 
 using DomainLayer.Contracts;
+using DomainLayer.Models.IdentityModules;
 using E_Commerce.Web.CustomMiddleWares;
 using E_Commerce.Web.Extenstions;
 using E_Commerce.Web.Factories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
 using Persistence.Data.Contexts;
+using Persistence.Identity;
 using Persistence.Repositories;
 using Service;
 using Service.Mapping_Profiles;
@@ -35,6 +38,7 @@ namespace E_Commerce.Web
             builder.Services.AddApplicationService();
 
             builder.Services.AddWebApplicationServices();
+            
 
             #endregion
 
