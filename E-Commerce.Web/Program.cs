@@ -38,6 +38,7 @@ namespace E_Commerce.Web
             builder.Services.AddApplicationService();
 
             builder.Services.AddWebApplicationServices();
+            builder.Services.AddJWTServices(builder.Configuration);
             
 
             #endregion
@@ -66,7 +67,7 @@ namespace E_Commerce.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthorization();
-
+            app.UseAuthentication();
 
             app.MapControllers();
             #endregion
