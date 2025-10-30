@@ -16,7 +16,7 @@ namespace Service.Mapping_Profiles
         {
             if(string.IsNullOrEmpty(source.PictureUrl))
                 return string.Empty;
-            return $"{_configuration.GetSection("Urls")["BaseUrl"]}/{source.PictureUrl}";
+            return $"{_configuration.GetSection("Urls")["BaseUrl"]}{source.PictureUrl}";
         }
     }
 }

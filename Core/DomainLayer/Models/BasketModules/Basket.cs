@@ -8,7 +8,7 @@ namespace DomainLayer.Models.BasketModules
 {
     public class Basket
     {
-        public string Id { get; set; }
-        ICollection<BasketItem> Items { get; set; } = [];
+        public string Id { get; set; } = null!;
+        public ICollection<BasketItem> Items { get; set; } = [];
     }
 }

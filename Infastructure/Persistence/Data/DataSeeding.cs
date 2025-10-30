@@ -1,5 +1,6 @@
 ﻿using DomainLayer.Contracts;
 using DomainLayer.Models.IdentityModules;
+using DomainLayer.Models.OrderModules;
 using DomainLayer.Models.ProductModules;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,13 +27,13 @@ namespace Persistence.Data
                     await _dbContext.Database.MigrateAsync();
                 }
 
-                if (!_dbContext.ProductBrands.Any())
+                if (!_dbContext.ProductBrands.Any()) 
                 {
                     var productBrandsData = File.OpenRead(@"..\Infastructure\Persistence\Data\DataSeed\brands.json");
                     var productBrand =await JsonSerializer.DeserializeAsync<List<ProductBrand>>(productBrandsData);
                     if (productBrand is not null && productBrand.Any())
                     {
-                        _dbContext.ProductBrands.AddRange(productBrand);
+                        await _dbContext.ProductBrands.AddRangeAsync(productBrand);
                     }
                 }
 
@@ -42,7 +43,7 @@ namespace Persistence.Data
                     var productType =await JsonSerializer.DeserializeAsync<List<ProductType>>(productTypeData);
                     if (productType is not null && productType.Any())
                     {
-                        _dbContext.ProductTypes.AddRange(productType);
+                        await _dbContext.ProductTypes.AddRangeAsync(productType);
                     }
                 }
                 if (!_dbContext.Products.Any())
@@ -51,9 +52,19 @@ namespace Persistence.Data
                     var products = await JsonSerializer.DeserializeAsync<List<Product>>(productData);
                     if (products is not null && products.Any())
                     {
-                        _dbContext.Products.AddRange(products);
+                        await _dbContext.Products.AddRangeAsync(products);
                     }
                 }
+                if (!_dbContext.Set<DeliveryMethod>().Any())
+                {
+                    var DeliveryMethodData = File.OpenRead(@"..\Infastructure\Persistence\Data\DataSeed\delivery.json");
+                    var DeliveryMethods = await JsonSerializer.DeserializeAsync<List<DeliveryMethod>>(DeliveryMethodData);
+                    if (DeliveryMethods is not null && DeliveryMethods.Any())
+                    {
+                        await _dbContext.Set<DeliveryMethod>().AddRangeAsync(DeliveryMethods);
+                    }
+                }
+
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -103,5 +114,6 @@ namespace Persistence.Data
                 
             }
         }
+
     }
 }
