@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DomainLayer.Contracts;
+using Microsoft.Extensions.DependencyInjection;
 using Service.Mapping_Profiles;
 using ServiceAbstraction;
 using System;
@@ -13,9 +14,37 @@ namespace Service
     {
         public static IServiceCollection AddApplicationService(this IServiceCollection Services)
         {
-            Services.AddScoped<IServiceManager, ServiceManager>();
-            Services.AddAutoMapper(config => config.AddProfile(new ProductProfile()), typeof(Service.AssemblyReference).Assembly); 
+            //Services.AddScoped<IServiceManager, ServiceManagerWithFactoryDelegate>();
+            Services.AddAutoMapper(config => config.AddProfile(new ProductProfile()), typeof(Service.AssemblyReference).Assembly);
 
+            //Services.AddKeyedScoped<IServiceManager, ServiceManager>("Lazy");
+            //Services.AddKeyedScoped<IServiceManager, ServiceManagerWithFactoryDelegate>("FactoryDelegate");
+
+            Services.AddScoped<IProductService, ProductService>();
+            Services.AddScoped<Func<IProductService>>(provider =>
+            {
+                return () => provider.GetRequiredService<IProductService>();
+            });
+
+            Services.AddScoped<IBasketService, BasketService>();
+            Services.AddScoped<Func<IBasketService>>(provider =>
+            {
+                return () => provider.GetRequiredService<IBasketService>();
+            });
+
+            Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            Services.AddScoped<Func<IAuthenticationService>>(provider =>
+            {
+                return () => provider.GetRequiredService<IAuthenticationService>();
+            });
+
+            Services.AddScoped<IOrderService, OrderService>();
+            Services.AddScoped<Func<IOrderService>>(provider =>
+            {
+                return () => provider.GetRequiredService<IOrderService>();
+            });
+
+            Services.AddScoped<ICacheService, CacheService>();
             return Services;
         }
     }

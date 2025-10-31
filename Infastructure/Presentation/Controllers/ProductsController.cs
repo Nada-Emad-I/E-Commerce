@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Presentation.Attributes;
 using ServiceAbstraction;
 using Shared;
 using Shared.Dtos.ProductModules;
+using Shared.ErrorModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +20,8 @@ namespace Presentation.Controllers
     public class ProductsController(IServiceManager _serviceManager):ControllerBase 
     {
         //Get All Products
-        [Authorize(Roles ="Admin")]
+        //[Authorize(Roles ="Admin")]
+        [Cache(120)]
         [HttpGet]
         //baseUrl/api/Products
         public async Task<ActionResult<PaginatedResult<ProductDto>>> GetAllProducts([FromQuery]ProductQueryParams queryParams)
@@ -26,6 +31,8 @@ namespace Presentation.Controllers
 
         }
         //Get  Product by id
+        [ProducesResponseType(typeof(ProductDto),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorToReturn),StatusCodes.Status404NotFound)]
         [HttpGet("{id:int}")]
         //baseUrl/api/Product/10
         public async Task<ActionResult<ProductDto>> GetProductById(int id)
