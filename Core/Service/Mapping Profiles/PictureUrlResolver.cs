@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using DomainLayer.Models;
+using DomainLayer.Models.ProductModules;
 using Microsoft.Extensions.Configuration;
-using Shared.Dtos;
+using Shared.Dtos.ProductModules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace Service.Mapping_Profiles
         {
             if(string.IsNullOrEmpty(source.PictureUrl))
                 return string.Empty;
-            return $"{_configuration.GetSection("Urls")["BaseUrl"]}/{source.PictureUrl}";
+            return $"{_configuration.GetSection("Urls")["BaseUrl"]}{source.PictureUrl}";
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using DomainLayer.Models;
+﻿using DomainLayer.Models.ProductModules;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared.Dtos
+namespace DomainLayer.Exceptions
 {
-    public class TypeDto
+    public abstract class NotFoundException(string Message):Exception(Message)
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = null!;
+
     }
 }

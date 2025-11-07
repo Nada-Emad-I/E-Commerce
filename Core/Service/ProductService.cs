@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using DomainLayer.Contracts;
-using DomainLayer.Models;
+using DomainLayer.Exceptions;
+using DomainLayer.Models.ProductModules;
 using Service.Specifications;
 using ServiceAbstraction;
 using Shared;
-using Shared.Dtos;
+using Shared.Dtos.ProductModules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +24,18 @@ namespace Service
             return brandsDto;
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(ProductQueryParams queryParams)
+        public async Task<PaginatedResult<ProductDto>> GetAllProductsAsync(ProductQueryParams queryParams)
         {
             var repo =  _unitOfWork.GetRepository<Product, int>();
             var specification = new ProductWithBrandAndTypeSpecification(queryParams);
             var products=await repo.GetAllAsync(specification);
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+            var productsDto= _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+            var productCount=productsDto.Count();
+
+            var CountSpec=new ProductCountSpecification(queryParams);
+            var totalCount = await repo.CountAsync(CountSpec);
+
+            return new PaginatedResult<ProductDto>(productCount, queryParams.pageIndex, totalCount, productsDto);
         }
 
         public async Task<IEnumerable<TypeDto>> GetAllTypesAsync()
@@ -37,13 +44,13 @@ namespace Service
             return _mapper.Map<IEnumerable<ProductType>, IEnumerable<TypeDto>>(types);
         }
 
-        public async Task<ProductDto?> GetProductByIdAsync(int id)
+        public async Task<ProductDto> GetProductByIdAsync(int id)
         {
             var repo = _unitOfWork.GetRepository<Product, int>();
             var specification = new ProductWithBrandAndTypeSpecification(id);
             var product = await repo.GetByIdAsync(specification);
             if (product == null)
-                return null;
+                throw new ProductNotFoundException(id);
             return _mapper.Map<Product, ProductDto>(product); 
         }
     }

@@ -39,7 +39,7 @@ namespace Persistence
                 //    query = query.Include(expression);
                 //}
 
-                query = specification.IncludeExpressions.Aggregate(query, (currentQuery, IncludeExp) => currentQuery.Include(IncludeExp);
+                query = specification.IncludeExpressions.Aggregate(query, (currentQuery, IncludeExp) => currentQuery.Include(IncludeExp));
             }
             return query;
         }
